@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<p><a class="btn btn-success" href="/add">Add Credential</a>
+ <a class="btn btn-secondary" href="/generate">Generate Password</a></p>
+<h4>Services</h4>
+{% if services %}
+  <ul class="list-group">
+  {% for s in services %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ s }}
+      <span>
+        <a class="btn btn-sm btn-info" href="/view/{{ s }}">View</a>
+        <a class="btn btn-sm btn-danger" href="/delete/{{ s }}">Delete</a>
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No services yet.</p>
+{% endif %}
+{% endblock %}

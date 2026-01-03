@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>View: {{ service }}</h2>
+<div class="card">
+  <div class="card-body">
+    <p><strong>Username:</strong> {{ cred.username }}</p>
+    <p><strong>Password:</strong> <span id="pwd">{{ cred.password }}</span>
+      <button class="btn btn-sm btn-outline-secondary" id="copyBtn">Copy</button>
+    </p>
+  </div>
+  <div class="card-footer">
+    <a class="btn btn-secondary" href="/dashboard">Back</a>
+  </div>
+</div>
+
+<script>
+document.getElementById('copyBtn').addEventListener('click', function(){
+  const text = document.getElementById('pwd').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    alert('Copied to clipboard');
+  });
+});
+</script>
+{% endblock %}

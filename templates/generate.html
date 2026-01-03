@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Generate Password</h2>
+<form method="post" class="form-inline mb-3">
+  <div class="form-group mr-2">
+    <label class="mr-2">Length</label>
+    <input type="number" name="length" value="16" min="8" class="form-control">
+  </div>
+  <button class="btn btn-primary">Generate</button>
+</form>
+{% if pwd %}
+  <div class="alert alert-success">Generated: <strong id="gen">{{ pwd }}</strong>
+    <button class="btn btn-sm btn-outline-secondary" id="copyGen">Copy</button>
+  </div>
+  <script>
+    document.getElementById('copyGen').addEventListener('click', function(){
+      navigator.clipboard.writeText(document.getElementById('gen').innerText).then(()=>alert('Copied'));
+    });
+  </script>
+{% endif %}
+{% endblock %}
