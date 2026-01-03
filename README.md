@@ -1,3 +1,6 @@
+&quot;This project was developed during the Winter Internship &#39;25
+at console.success.&quot;
+
 # Secure Password Manager
 
 A small, secure password manager built as a CLI tool and extended with a lightweight web UI (Flask). It stores credentials encrypted with a key derived from a master password.
