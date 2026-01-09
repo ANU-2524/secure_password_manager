@@ -1,21 +1,38 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Generate Password</h2>
-<form method="post" class="form-inline mb-3">
-  <div class="form-group mr-2">
-    <label class="mr-2">Length</label>
-    <input type="number" name="length" value="16" min="8" class="form-control">
+<div style="max-width: 500px; margin: 0 auto;">
+  <div class="card">
+    <div class="card-header">
+      <h2>Generate Strong Password</h2>
+    </div>
+
+    <form method="POST">
+      <div class="form-group">
+        <label for="length">Password Length: <span id="length-val">16</span></label>
+        <input type="range" id="length" name="length" min="8" max="64" value="16"
+          oninput="document.getElementById('length-val').innerText = this.value">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fas fa-magic"></i> Generate Password
+      </button>
+    </form>
+
+    {% if pwd %}
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+      <label>Generated Password</label>
+      <div class="flex gap-2">
+        <input type="text" value="{{ pwd }}" readonly style="font-family: monospace; font-size: 1.1rem;">
+        <button class="btn btn-success" onclick="copyToClipboard('{{ pwd }}', this)">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+        <i class="fas fa-info-circle"></i> Clipboard will be cleared automatically after 10 seconds.
+      </p>
+    </div>
+    {% endif %}
   </div>
-  <button class="btn btn-primary">Generate</button>
-</form>
-{% if pwd %}
-  <div class="alert alert-success">Generated: <strong id="gen">{{ pwd }}</strong>
-    <button class="btn btn-sm btn-outline-secondary" id="copyGen">Copy</button>
-  </div>
-  <script>
-    document.getElementById('copyGen').addEventListener('click', function(){
-      navigator.clipboard.writeText(document.getElementById('gen').innerText).then(()=>alert('Copied'));
-    });
-  </script>
-{% endif %}
+</div>
 {% endblock %}

@@ -1,22 +1,59 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Dashboard</h2>
-<p><a class="btn btn-success" href="/add">Add Credential</a>
- <a class="btn btn-secondary" href="/generate">Generate Password</a></p>
-<h4>Services</h4>
-{% if services %}
-  <ul class="list-group">
-  {% for s in services %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      {{ s }}
-      <span>
-        <a class="btn btn-sm btn-info" href="/view/{{ s }}">View</a>
-        <a class="btn btn-sm btn-danger" href="/delete/{{ s }}">Delete</a>
-      </span>
-    </li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p>No services yet.</p>
-{% endif %}
+<div class="card">
+  <div class="card-header flex justify-between items-center">
+    <h2><i class="fas fa-key"></i> Your Vault</h2>
+    <div class="flex gap-2">
+      <input type="text" id="search" placeholder="Search credentials..." style="width: 200px; padding: 0.5rem;"
+        onkeyup="filterServices()">
+      <a href="{{ url_for('add') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New
+      </a>
+    </div>
+  </div>
+
+  {% if services %}
+  <div class="grid" id="serviceGrid">
+    {% for service in services %}
+    <a href="{{ url_for('view', service=service) }}" class="service-card" data-name="{{ service.lower() }}">
+      <div class="service-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="service-name">{{ service }}</div>
+      <div class="service-meta">Click to view details</div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center" style="padding: 4rem 0;">
+    <div style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;">
+      <i class="fas fa-folder-open"></i>
+    </div>
+    <h3>Vault is Empty</h3>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Start by adding your first password.</p>
+    <a href="{{ url_for('add') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add Credential
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  function filterServices() {
+    const input = document.getElementById('search');
+    const filter = input.value.toLowerCase();
+    const grid = document.getElementById('serviceGrid');
+    const cards = grid.getElementsByClassName('service-card');
+
+    for (let i = 0; i < cards.length; i++) {
+      const name = cards[i].getAttribute('data-name');
+      if (name.indexOf(filter) > -1) {
+        cards[i].style.display = "";
+      } else {
+        cards[i].style.display = "none";
+      }
+    }
+  }
+</script>
 {% endblock %}

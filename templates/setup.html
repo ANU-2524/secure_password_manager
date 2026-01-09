@@ -1,15 +1,75 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Setup Master Password</h2>
-<form method="post">
-  <div class="form-group">
-    <label>Password</label>
-    <input type="password" name="password" class="form-control" required>
+<div class="auth-container">
+  <div class="card">
+    <div class="card-header text-center">
+      <div style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;">
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <h2>Setup Vault</h2>
+      <p style="color: var(--text-secondary);">Create a strong master password. Do not lose this!</p>
+    </div>
+
+    <form method="POST">
+      <div class="form-group">
+        <label for="password">Master Password</label>
+        <input type="password" id="password" name="password" required minlength="8" onkeyup="checkStrength(this.value)">
+        <div class="strength-meter">
+          <div id="strength-bar" class="strength-bar"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" name="confirm" required minlength="8">
+      </div>
+
+      <div class="alert alert-danger" style="font-size: 0.9rem;">
+        <i class="fas fa-exclamation-triangle"></i> If you lose this password, your data cannot be recovered.
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fas fa-check-circle"></i> Create Vault
+      </button>
+    </form>
   </div>
-  <div class="form-group">
-    <label>Confirm Password</label>
-    <input type="password" name="confirm" class="form-control" required>
-  </div>
-  <button class="btn btn-primary">Set Password</button>
-</form>
+</div>
+
+<script>
+  function checkStrength(password) {
+    const bar = document.getElementById('strength-bar');
+    let strength = 0;
+
+    if (password.length > 7) strength += 1;
+    if (password.match(/[a-z]+/)) strength += 1;
+    if (password.match(/[A-Z]+/)) strength += 1;
+    if (password.match(/[0-9]+/)) strength += 1;
+    if (password.match(/[$@#&!]+/)) strength += 1;
+
+    switch (strength) {
+      case 0:
+      case 1:
+        bar.style.width = '20%';
+        bar.style.backgroundColor = 'var(--danger-color)';
+        break;
+      case 2:
+        bar.style.width = '40%';
+        bar.style.backgroundColor = '#f59e0b';
+        break;
+      case 3:
+        bar.style.width = '60%';
+        bar.style.backgroundColor = '#f59e0b';
+        break;
+      case 4:
+        bar.style.width = '80%';
+        bar.style.backgroundColor = 'var(--success-color)';
+        break;
+      case 5:
+        bar.style.width = '100%';
+        bar.style.backgroundColor = 'var(--success-color)';
+        break;
+    }
+  }
+</script>
 {% endblock %}
